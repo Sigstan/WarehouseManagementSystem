@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WarehouseManagementSystem.WEB.Entities;
 using WarehouseManagementSystem.WEB.Models;
 using WarehouseManagementSystem.WEB.Repositories;
@@ -23,9 +24,10 @@ namespace WarehouseManagementSystem.WEB.Services
             await _repository.SaveAsync(entity);
         }
 
-        public List<Inventory> GetAllCustomerInventories(Guid customerId)
+        public async Task<List<Inventory>> GetAllCustomerInventories(Guid customerId)
         {
-            return _repository.Query<Inventory>().Where(x => x.CustomerId == customerId).ToList();
+            var inventory = await _repository.Query<Inventory>().Where(x => x.CustomerId == customerId).ToListAsync();
+            return inventory;
         }
 
         private Inventory HandleViewToEntity(InventoryViewModel inventoryViewModel)
@@ -54,7 +56,7 @@ namespace WarehouseManagementSystem.WEB.Services
             return model;
         }
 
-        public List<InventoryViewModel> PrepareInventoryViewModels(List<Inventory> inventories)
+        public List<InventoryViewModel> PrepareInventoriesViewModels(List<Inventory> inventories)
         {
             var listOfInventory = new List<InventoryViewModel>();
             if (inventories == null)

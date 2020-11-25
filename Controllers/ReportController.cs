@@ -15,10 +15,9 @@ namespace WarehouseManagementSystem.WEB.Controllers
         {
             _reportService = reportService;
         }
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-           
-            return View();
+           return View();
         } 
         public async Task<IActionResult> Top5Customers()
         {

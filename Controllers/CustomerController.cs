@@ -42,9 +42,9 @@ namespace WarehouseManagementSystem.WEB.Controllers
 
             return RedirectToAction("List");
         }
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-           var customers = _customerService.GetAllCustomersViewModels();
+           var customers = await _customerService.GetAllCustomersViewModels();
 
             return View(customers);
         } 

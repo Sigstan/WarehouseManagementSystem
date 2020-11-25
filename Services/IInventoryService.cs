@@ -10,10 +10,9 @@ namespace WarehouseManagementSystem.WEB.Services
     public interface IInventoryService
     {
         Task SaveInventory(InventoryViewModel inventoryViewModel, Guid customerId);
-        List<Inventory> GetAllCustomerInventories(Guid customerId);
-        List<InventoryViewModel> PrepareInventoryViewModels(List<Inventory> inventories);
-       // List<InventoryViewModel> PrepareCustomersInventoryViewModels(Guid customerId);
-       Task DeleteInventory(Guid inventoryId);
-       Task<InventoryViewModel> GetInventoryDetails(Guid inventoryId);
+        Task<List<Inventory>> GetAllCustomerInventories(Guid customerId);
+        List<InventoryViewModel> PrepareInventoriesViewModels(List<Inventory> inventories);
+        Task DeleteInventory(Guid inventoryId);
+        Task<InventoryViewModel> GetInventoryDetails(Guid inventoryId);
     }
 }

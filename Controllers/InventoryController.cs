@@ -55,7 +55,7 @@ namespace WarehouseManagementSystem.WEB.Controllers
             return View(model);
         } 
         [HttpPost]
-        public async  Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete()
         {
             Guid.TryParse(TempData["inventoryId"].ToString(), out Guid inventoryId);
 

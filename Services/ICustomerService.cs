@@ -12,7 +12,7 @@ namespace WarehouseManagementSystem.WEB.Services
     {
        Task<bool> SaveCustomer(CustomerViewModel customerViewModel);
        Customer HandleViewToEntity(CustomerViewModel customerViewModel);
-       ListOfCustomersViewModel GetAllCustomersViewModels();
+       Task <ListOfCustomersViewModel> GetAllCustomersViewModels();
        Task<ExtendedCustomerViewModel> GetCustomersDetailsViewModel(Guid customerId);
     }
 }

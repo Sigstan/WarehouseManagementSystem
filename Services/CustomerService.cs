@@ -57,10 +57,10 @@ namespace WarehouseManagementSystem.WEB.Services
             return entity;
         }
 
-        public ListOfCustomersViewModel GetAllCustomersViewModels()
+        public async Task<ListOfCustomersViewModel> GetAllCustomersViewModels()
         {
-            var entities = GetAllCustomers();
-            var customers = PrepareCustomerToView(entities);
+            var entities = await GetAllCustomers();
+            var customers = await PrepareCustomerToView(entities);
             var listOfCustomers = new ListOfCustomersViewModel()
             {
                 CustomerViewModels = customers
@@ -71,9 +71,8 @@ namespace WarehouseManagementSystem.WEB.Services
         public async Task<ExtendedCustomerViewModel> GetCustomersDetailsViewModel(Guid customerId)
         {
             var customer = await GetCustomerById(customerId);
-            //TODO: o kas jei negauni customer?
-            var model = HandleEntityToExtendedView(customer);
-            model.Inventory = _inventoryService.PrepareInventoryViewModels(customer.Inventories);
+            var model = await HandleEntityToExtendedView(customer);
+            model.Inventory = _inventoryService.PrepareInventoriesViewModels(customer.Inventories);
             return model;
         }
 
@@ -82,19 +81,19 @@ namespace WarehouseManagementSystem.WEB.Services
             return await _repository.GetEntityById<Customer>(customerId);
         }
 
-        private List<ExtendedCustomerViewModel> PrepareCustomerToView(List<Customer> entities)
+        private async Task<List<ExtendedCustomerViewModel>> PrepareCustomerToView(List<Customer> entities)
         {
             var customersViewModels = new List<ExtendedCustomerViewModel>();
             foreach (var entity in entities)
             {
-                var model = HandleEntityToExtendedView(entity);
+                var model = await HandleEntityToExtendedView(entity);
                 customersViewModels.Add(model);
             }
 
             return customersViewModels;
         }
 
-        private ExtendedCustomerViewModel HandleEntityToExtendedView(Customer entity)
+        private async Task<ExtendedCustomerViewModel> HandleEntityToExtendedView(Customer entity)
         {
             var model = HandelEntityToView(entity);
             var modelExtended = new ExtendedCustomerViewModel()
@@ -106,13 +105,14 @@ namespace WarehouseManagementSystem.WEB.Services
                 PhoneNumber = model.PhoneNumber,
                 Id = model.Id
             };
-            var inventories = _inventoryService.GetAllCustomerInventories(entity.Id).Count();
+            var inventories = (await _inventoryService.GetAllCustomerInventories(entity.Id)).Count();
             modelExtended.RegisteredInventory = inventories;
             return modelExtended;
         }
 
         private CustomerViewModel HandelEntityToView(Customer entity)
         {
+
             var model = new CustomerViewModel()
             {
                 Birthday = entity.Birthday,
@@ -125,9 +125,11 @@ namespace WarehouseManagementSystem.WEB.Services
             return model;
         }
 
-        private List<Customer> GetAllCustomers()
+        private async Task<List<Customer>> GetAllCustomers()
         {
-            return _repository.Query<Customer>().Where(x => x.Id != null).ToList();
+            var customers = await _repository.Query<Customer>().Where(x => x.Id != null)
+                .ToListAsync() ?? new List<Customer>();
+            return customers;
         }
     }
 }
