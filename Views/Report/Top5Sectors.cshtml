@@ -1,0 +1,42 @@
+﻿@model Top5SectorsViewModel
+
+@{
+    ViewData["Title"] = "Top5Sectors";
+}
+
+<h1>Top 5 Sectors</h1>
+
+@if (Model.Sectors.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sectors.FirstOrDefault().Sector)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sectors.FirstOrDefault().Weight)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Sectors)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sector)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>NO DATA</div>
+}
